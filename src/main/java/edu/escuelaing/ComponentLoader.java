@@ -14,6 +14,7 @@ public class ComponentLoader {
 
         System.out.println(ejecutar("/hello", "?name=Santiago&sn=Bayona"));
         System.out.println(ejecutar("/hellopost", "?name=Santiago&sn=Bayona"));
+        System.out.println(ejecutar("/POJO", "?name=Santiago&sn=Bayona"));
     }
 
     public static String ejecutar(String ruta, String param) throws InvocationTargetException, IllegalAccessException {
@@ -31,7 +32,17 @@ public class ComponentLoader {
                         String ruta = method.getAnnotation(GetMapping.class).value();
                         //Extraer el nombre del método
                         System.out.println("Cargando método " + method.getName());
-                        System.out.println("En" + ruta);
+                        System.out.println("En " + ruta);
+                        //Crear la lista de tipos del método
+                        servicios.put(ruta, method);
+                        //Obtener el método
+                        //Agregar el método a la tabla de objetos ejecutables
+                    }else if(method.isAnnotationPresent(RequestMapping.class)){
+                        //Extraer el valor del parámetro
+                        String ruta = method.getAnnotation(RequestMapping.class).path();
+                        //Extraer el nombre del método
+                        System.out.println("Cargando método " + method.getName());
+                        System.out.println("En " + ruta);
                         //Crear la lista de tipos del método
                         servicios.put(ruta, method);
                         //Obtener el método
