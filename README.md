@@ -25,6 +25,8 @@ mvn clean package install
 ### @RequestMapping
 Se definió la anotación RequestMapping con la que se marcarán los métodos que atiende el servicio web definidos en una clase de servicios
 
+![image](https://github.com/SantiagoBayona/AREP-Lab-04/assets/64861204/67774d79-3545-466a-927c-62b8480abf10)
+
 ## Ejecución
 
 1. Corremos el servidor
