@@ -2,11 +2,11 @@
 
 Servidor Web (tipo Apache) en Java capaz de entregar páginas html e imágenes tipo PNG. Igualmente el servidor provee un framework IoC para la construcción de aplicaciones web a partir de POJOS.
 
-### Prerrequisitos
+## Prerrequisitos
 - Java
 - Maven
 
-### Instalación
+## Instalación
 
 1. Clonar el repositorio
 
@@ -17,8 +17,13 @@ git clone https://github.com/SantiagoBayona/AREP-Lab-04
 2. Dentro del directorio del proyecto lo construimos
 
 ```
-mvn package
+mvn clean package install
 ```
+
+## Diseño y estructura
+
+### @RequestMapping
+Se definió la anotación RequestMapping con la que se marcarán los métodos que atiende el servicio web definidos en una clase de servicios
 
 ## Ejecución
 
@@ -65,8 +70,22 @@ https://localhost:35000/POJO
 
 ![img 4](https://github.com/SantiagoBayona/AREP-Lab-04/assets/64861204/42a7860b-3db7-4667-a090-be4fe0ee1803)
 
+```
+https://localhost:35000/index.html
+```
+
+![img 7](https://github.com/SantiagoBayona/AREP-Lab-04/assets/64861204/156cf8f2-1ff4-4102-8de4-6f9b9aa58718)
+
+## Aplicación de prueba
+
+Se construyó una aplicación sencilla usando uno de los métodos definidos en la construcción del framework
+
+![img 6](https://github.com/SantiagoBayona/AREP-Lab-04/assets/64861204/152a3412-e0aa-46bc-8e3c-02ad24de7210)
+
 ## Construido con
 
 * Java
 * Maven
 * Git
+* HTML & CSS
+* JS
