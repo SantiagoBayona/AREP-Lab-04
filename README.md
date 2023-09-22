@@ -11,7 +11,7 @@ Servidor Web (tipo Apache) en Java capaz de entregar páginas html e imágenes t
 1. Clonar el repositorio
 
 ```
-git clone https://github.com/SantiagoBayona/AREP-Lab-03
+git clone https://github.com/SantiagoBayona/AREP-Lab-04
 ```
 
 2. Dentro del directorio del proyecto lo construimos
@@ -31,7 +31,7 @@ mvn exec:java -"Dexec.mainClass"="edu.escuelaing.HttpServer"
 ## En Linux/MacOs
 
 ```
-java -cp target/classes edu.escuelaing.arep.ASE.app.main
+java -cp target/classes edu.escuelaing.HttpServer
 ```
 
 2. Ingresamos a la página mediante esta URL en un navegador
@@ -47,6 +47,8 @@ Para probar el servidor debemos hacerle alguna petición
 
 ![img 2](https://github.com/SantiagoBayona/AREP-Lab-04/assets/64861204/ddecf8ad-5267-46b7-af59-200c0ebd15e7)
 
+Por ejemplo, solicitarle una imagen
+
 ```
 https://localhost:35000/imgg.png
 ```
@@ -55,7 +57,7 @@ Al hacerlo vemos que el recurso solicitado carga en el navegador
 
 ![img 3](https://github.com/SantiagoBayona/AREP-Lab-04/assets/64861204/e38d6b0d-9aec-4b0f-ba92-5d19b6a03b7c)
 
-También le podemos hacer otor tipo de peticiones
+También le podemos hacer otro tipo de peticiones
 
 ```
 https://localhost:35000/POJO
