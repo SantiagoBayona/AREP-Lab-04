@@ -1,9 +1,14 @@
 package edu.escuelaing;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.net.*;
 import java.io.*;
-
+import java.nio.charset.Charset;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 
 public class HttpServer {
@@ -31,7 +36,8 @@ public class HttpServer {
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(
                             clientSocket.getInputStream()));
-            String inputLine, outputLine;
+            String inputLine = null;
+            String outputLine = "";
 
             boolean firstLine = true;
             String uriString = "";
@@ -40,7 +46,6 @@ public class HttpServer {
                 System.out.println("Received: " + inputLine);
                 if (firstLine) {
                     firstLine = false;
-                    // POST /hellopost?name=John HTTP/1.1
                     uriString = inputLine.split(" ")[1];
                 }
                 if (!in.ready()) {
@@ -48,6 +53,7 @@ public class HttpServer {
                 }
             }
             System.out.println("URI: " + uriString);
+            String responseBody = "";
 
             ComponentLoader.cargarComponentes(new String[]{"edu.escuelaing.Servicio"});
 
@@ -71,6 +77,8 @@ public class HttpServer {
                         + "Content-Type: application/json\r\n"
                         + "\r\n"
                         + ComponentLoader.ejecutar("/helloreq", uriString);
+            }else if (uriString.startsWith("/img.png") || uriString.startsWith("/imgg.png")){
+                outputLine = searchFile(uriString, responseBody, outputLine, clientSocket);
             } else {
                 outputLine = getIndexResponse();
             }
@@ -83,15 +91,53 @@ public class HttpServer {
         serverSocket.close();
     }
 
-    public static String getHello(String uri) {
-        String response = "HTTP/1.1 200 OK\r\n"
-                + "Content-Type: application/json\r\n"
-                + "\r\n"
-                + "{ \"msg\": \"Hello Pedro\" }";
-        return response;
+    private static String searchFile(String path, String responseBody, String outputLine, Socket clientSocket) throws IOException {
+        if (path != null && !getFile(path).equals("Not Found")) {
+            responseBody = getFile(path);
+            outputLine = getLine(responseBody);
+        } else if (path != null && path.split("\\.")[1].equals("jpg") || path.split("\\.")[1].equals("png")) {
+            OutputStream outputStream = clientSocket.getOutputStream();
+            File file = new File("src/main/resources/img/" + path);
+            BufferedImage bufferedImage = ImageIO.read(file);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
+            ImageIO.write(bufferedImage, path.split("\\.")[1], byteArrayOutputStream);
+            outputLine = getImg("");
+            dataOutputStream.writeBytes(outputLine);
+            dataOutputStream.write(byteArrayOutputStream.toByteArray());
+            System.out.println(outputLine);
+        }
+        return outputLine;
     }
 
+    public static String getFile(String route) {
+        Path file = FileSystems.getDefault().getPath("src/main/resources/img", route);
+        Charset charset = Charset.forName("US-ASCII");
+        String web = "";
+        try (BufferedReader reader = Files.newBufferedReader(file, charset)) {
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                web += line + "\n";
+            }
+        } catch (IOException x) {
+            web = "Not Found";
+        }
+        return web;
+    }
+    private static String getImg(String responseBody) {
+        System.out.println("response Body" + responseBody);
+        return "HTTP/1.1 200 OK \r\n"
+                + "Content-Type: image/png\r\n"
+                + "\r\n";
+    }
 
+    public static String getLine(String responseBody) {
+        return "HTTP/1.1 200 OK \r\n"
+                + "Content-Type: text/html \r\n"
+                + "\r\n"
+                + "\n"
+                + responseBody;
+    }
 
     public static String getIndexResponse() {
         return "HTTP/1.1 200 OK\r\n"

@@ -22,4 +22,14 @@ public class Servicio {
     public static String request(String arg) {
         return "RequestMapping";
     }
+
+    @RequestMapping(path = "/img.png")
+    public static String imgPng(String arg) {
+        return "/img.png";
+    }
+
+    @RequestMapping(path = "/imgg.png")
+    public static String imgPng2(String arg) {
+        return "/imgg.png";
+    }
 }
