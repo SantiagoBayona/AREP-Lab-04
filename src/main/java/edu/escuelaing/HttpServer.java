@@ -77,9 +77,11 @@ public class HttpServer {
                         + "Content-Type: application/json\r\n"
                         + "\r\n"
                         + ComponentLoader.ejecutar("/helloreq", uriString);
-            }else if (uriString.startsWith("/img.png") || uriString.startsWith("/imgg.png")){
+            }else if (uriString.startsWith("/img.png") || uriString.startsWith("/imgg.png") || uriString.startsWith("/index.html")){
                 outputLine = searchFile(uriString, responseBody, outputLine, clientSocket);
-            } else {
+            }else if (uriString.startsWith("/app")){
+                outputLine = app();
+            }else {
                 outputLine = getIndexResponse();
             }
             out.println(outputLine);
@@ -192,5 +194,95 @@ public class HttpServer {
                 + "        </script>\n"
                 + "    </body>\n"
                 + "</html>";
+    }
+
+    public static String app(){
+        return  "HTTP/1.1 200 OK\r\n" +
+                "Content-Type: text/html\n" +
+                "\r\n" +
+                "<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "    <title>Mi Página</title>\n" +
+                "    <style>\n" +
+                "        /* Estilos CSS para mejorar la apariencia */\n" +
+                "        body {\n" +
+                "            font-family: Arial, sans-serif;\n" +
+                "            text-align: center;\n" +
+                "        }\n" +
+                "        header {\n" +
+                "            background-color: #333;\n" +
+                "            color: #fff;\n" +
+                "            padding: 10px 0;\n" +
+                "        }\n" +
+                "        footer {\n" +
+                "            background-color: #333;\n" +
+                "            color: #fff;\n" +
+                "            padding: 10px 0;\n" +
+                "            position: absolute;\n" +
+                "            bottom: 0;\n" +
+                "            width: 100%;\n" +
+                "        }\n" +
+                "        .container {\n" +
+                "            margin: 50px auto;\n" +
+                "            max-width: 400px;\n" +
+                "            padding: 20px;\n" +
+                "            border: 1px solid #ccc;\n" +
+                "            border-radius: 5px;\n" +
+                "        }\n" +
+                "        h1 {\n" +
+                "            font-size: 24px;\n" +
+                "        }\n" +
+                "        input[type=\"text\"] {\n" +
+                "            width: 100%;\n" +
+                "            padding: 10px;\n" +
+                "            margin: 10px 0;\n" +
+                "            border: 1px solid #ccc;\n" +
+                "            border-radius: 5px;\n" +
+                "        }\n" +
+                "        button {\n" +
+                "            background-color: #333;\n" +
+                "            color: #fff;\n" +
+                "            border: none;\n" +
+                "            padding: 10px 20px;\n" +
+                "            border-radius: 5px;\n" +
+                "            cursor: pointer;\n" +
+                "        }\n" +
+                "    </style>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "    <header>\n" +
+                "        <h1>App de prueba</h1>\n" +
+                "    </header>\n" +
+                "    <div class=\"container\">\n" +
+                "        <h2>Enviar Saludo</h2>\n" +
+                "        <input type=\"text\" id=\"nombre\" placeholder=\"Escribe tu nombre\">\n" +
+                "        <button onclick=\"enviarSaludo()\">Enviar</button>\n" +
+                "        <p id=\"resultado\"></p>\n" +
+                "    </div>\n" +
+                "    <footer>\n" +
+                "        App de prueba\n" +
+                "    </footer>\n" +
+                "\n" +
+                "    <script>\n" +
+                "        function enviarSaludo() {\n" +
+                "            var nombre = document.getElementById(\"nombre\").value;\n" +
+                "            if (nombre.trim() !== \"\") {\n" +
+                "                nombre = encodeURIComponent(nombre);\n" +
+                "                fetch('/hello?arg=' + nombre)\n" +
+                "                    .then(response => response.text())\n" +
+                "                    .then(data => {\n" +
+                "                        document.getElementById(\"resultado\").textContent = data;\n" +
+                "                    })\n" +
+                "                    .catch(error => {\n" +
+                "                        console.error('Error:', error);\n" +
+                "                    });\n" +
+                "            }\n" +
+                "        }\n" +
+                "    </script>\n" +
+                "</body>\n" +
+                "</html>\n";
     }
 }

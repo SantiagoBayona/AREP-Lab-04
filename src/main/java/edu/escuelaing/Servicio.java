@@ -5,7 +5,7 @@ public class Servicio {
 
     @GetMapping("/hello")
     public static String hola(String arg){
-        return "Hola " + arg;
+        return "Hola " + arg.split("=")[1];
     }
 
     @GetMapping("/hellopost")
@@ -31,5 +31,15 @@ public class Servicio {
     @RequestMapping(path = "/imgg.png")
     public static String imgPng2(String arg) {
         return "/imgg.png";
+    }
+
+    @RequestMapping(path = "/index.html")
+    public static String html(String arg) {
+        return "/index.html";
+    }
+
+    @RequestMapping(path = "/app")
+    public static String app(String arg) {
+        return "/app";
     }
 }
